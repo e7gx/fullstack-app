@@ -1,47 +1,41 @@
 from ninja import NinjaAPI
-from .models import Todo
 from django.shortcuts import get_object_or_404
 from typing import List
-from .schema import TodoIn,TodoOut
+from .models import Todo
+from .schema import TodoIn, TodoOut
 
 ninjaapi = NinjaAPI()
 
-
-##! CRUD operations
-@ninjaapi.post("/todo")
+# Create a new todo
+@ninjaapi.post("/todo/create", response=TodoOut)
 def create_todo(request, payload: TodoIn):
     todo = Todo.objects.create(**payload.dict())
-    return {'id':todo.id}
-
-
-@ninjaapi.get("/todo/{todo_id}",response=TodoOut)
-def get_todo(request,todo_id:int):
-    todo = get_object_or_404(Todo,id=todo_id)
     return todo
 
+# Fetch a single todo by id
+@ninjaapi.get("/todo/{todo_id}", response=TodoOut)
+def get_todo(request, todo_id: int):
+    todo = get_object_or_404(Todo, id=todo_id)
+    return todo
 
-
-@ninjaapi.get("/todo",response=List[TodoOut])
+# Fetch all todos
+@ninjaapi.get("/todo/get/", response=List[TodoOut])
 def get_todos(request):
-    qs = Todo.objects.all()
-    return qs
+    todos = Todo.objects.all()
+    return todos
 
-
-
-@ninjaapi.put("/todo/{todo_id}")
-def update_todo(request,todo_id:int,payload:TodoIn):
-    
-    todo = get_object_or_404(Todo,id=todo_id)
-    
-    for atter,value in payload.dict().items():
-        setattr(todo,atter,value)
-        
+# Update an existing todo
+@ninjaapi.put("/todo/put/{todo_id}", response=dict)
+def update_todo(request, todo_id: int, payload: TodoIn):
+    todo = get_object_or_404(Todo, id=todo_id)
+    for attr, value in payload.dict().items():
+        setattr(todo, attr, value)
     todo.save()
-    return {"success":True}
+    return {"success": True}
 
-
-@ninjaapi.delete("/todo/{todo_id}")
-def delete_todo(request,todo_id:int):
-    todo = get_object_or_404(Todo,id=todo_id)
+# Delete a todo
+@ninjaapi.delete("/todo/delete/{todo_id}", response=dict)
+def delete_todo(request, todo_id: int):
+    todo = get_object_or_404(Todo, id=todo_id)
     todo.delete()
-    return {"success":True}
+    return {"success": True}
