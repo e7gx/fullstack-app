@@ -113,8 +113,8 @@ This project is a simple Todo List application that allows users to manage their
 1. **Clone the Repository**
 
     ```sh
-    git clone https://github.com/your-username/todo-list-app.git
-    cd todo-list-app/frontend
+    git clone https://github.com/e7gx/fullstack-app.git
+   
     ```
 
 2. **Install Dependencies**
