@@ -10,7 +10,6 @@ A full-stack Todo List application built with Django for the backend and Flutter
 - [Prerequisites](#prerequisites)
 - [Backend Setup (Django)](#backend-setup-django)
 - [Frontend Setup (Flutter)](#frontend-setup-flutter)
-- [API Endpoints](#api-endpoints)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -139,14 +138,6 @@ This project is a simple Todo List application that allows users to manage their
     ```sh
     flutter run
     ```
-
-## API Endpoints
-
-- **GET /api/todos**: List all todo items
-- **POST /api/todos**: Create a new todo item
-- **GET /api/todos/{todo_id}**: Retrieve a specific todo item
-- **PUT /api/todos/{todo_id}**: Update a specific todo item
-- **DELETE /api/todos/{todo_id}**: Delete a specific todo item
 
 ## Contributing
 
