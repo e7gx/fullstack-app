@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'package:todoapp/screens/view/intro.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,18 +11,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Todo App',
       theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: Colors.white,
+        cardColor: Colors.white,
+        canvasColor: Colors.white,
         fontFamily: 'Cairo', // Apply the custom font family here
-        appBarTheme: AppBarTheme(
-          color: Colors.blueGrey[900], // Custom color for AppBar
+        appBarTheme: const AppBarTheme(
+          color: Colors.white, // Custom color for AppBar
         ),
-        textTheme: TextTheme(
-          bodyLarge: TextStyle(color: Colors.white),
-          bodyMedium: TextStyle(color: Colors.white70),
-        ),
+
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
@@ -31,11 +31,11 @@ class MyApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
-            backgroundColor: Colors.blueGrey[700], // Text color
+            backgroundColor: Colors.black, // Text color
           ),
         ),
       ),
-      home: HomeScreen(),
+      home: const OnBoardingPage(),
     );
   }
 }
