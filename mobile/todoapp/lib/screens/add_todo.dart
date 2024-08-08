@@ -41,11 +41,11 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 28.0),
+                padding: const EdgeInsets.only(bottom: 28.0, top: 20),
                 child: Image.asset(
                   'assets/images/task.png',
                   height: 200,
@@ -59,7 +59,21 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     TextFormField(
-                      decoration: const InputDecoration(labelText: 'Title'),
+                      decoration: const InputDecoration(
+                        labelText: 'Title',
+                        labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Cario',
+                            fontWeight: FontWeight.bold),
+                        filled: true,
+                        fillColor: Colors.white,
+                        focusColor: Colors.black,
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a title';
@@ -72,8 +86,22 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
-                      decoration:
-                          const InputDecoration(labelText: 'Description'),
+                      decoration: const InputDecoration(
+                        labelText: 'Description',
+                        labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Cario',
+                          fontWeight: FontWeight.bold,
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        focusColor: Colors.black,
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a description';

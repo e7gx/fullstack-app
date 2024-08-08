@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
         primaryColor: Colors.black,
-        splashColor: Color(0x69494444),
+        splashColor: const Color(0x69494444),
         cardColor: Colors.white,
         canvasColor: Colors.white,
         fontFamily: 'Cairo', // Apply the custom font family here
