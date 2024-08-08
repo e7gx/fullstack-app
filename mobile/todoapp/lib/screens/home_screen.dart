@@ -113,8 +113,8 @@ class CustomDrawer extends StatelessWidget {
               backgroundColor: Colors.white,
               child: Image.asset(
                 'assets/images/task.png',
-                width: 80,
-                height: 80,
+                width: 150,
+                height: 150,
               ),
             ),
           ),

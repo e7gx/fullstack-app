@@ -45,7 +45,10 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 28.0, top: 20),
+                padding: const EdgeInsets.only(
+                  bottom: 28.0,
+                  top: 28,
+                ),
                 child: Image.asset(
                   'assets/images/task.png',
                   height: 200,
