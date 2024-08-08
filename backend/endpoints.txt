@@ -1,0 +1,166 @@
+Here is the detailed documentation for your API endpoints:
+
+1. User Registration
+Endpoint: /register
+Method: POST
+Description: Registers a new user and returns JWT tokens for authentication.
+Request Body: UserCreate
+first_name (str): User's first name.
+last_name (str): User's last name.
+username (str): Desired username. Must be unique.
+email (str): User's email address.
+password (str): Password for the user account. Must be hashed.
+Response: UserOut
+username (str): Username of the newly created user.
+token (dict): Contains access and refresh JWT tokens.
+access (str): JWT access token.
+refresh (str): JWT refresh token.
+Success Response:
+json
+نسخ الكود
+{
+  "username": "john_doe",
+  "token": {
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsIn..."
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsIn..."
+  }
+}
+Error Response:
+json
+نسخ الكود
+{
+  "error": "Username already exists"
+}
+2. User Login
+Endpoint: /login
+Method: POST
+Description: Authenticates a user and returns JWT tokens for authenticated access.
+Request Body: UserLogin
+username (str): User's username.
+password (str): User's password.
+Response: UserOut
+username (str): Username of the authenticated user.
+token (dict): Contains access and refresh JWT tokens.
+access (str): JWT access token.
+refresh (str): JWT refresh token.
+Success Response:
+json
+نسخ الكود
+{
+  "username": "john_doe",
+  "token": {
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsIn..."
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsIn..."
+  }
+}
+Error Response:
+json
+نسخ الكود
+{
+  "error": "Invalid credentials"
+}
+3. Create Todo
+Endpoint: /todo/create
+Method: POST
+Description: Creates a new todo item.
+Request Body: TodoIn
+title (str): Title of the todo item.
+description (str): Description of the todo item.
+done (bool): Status of the todo item (completed or not).
+Response: TodoOut
+id (int): Unique ID of the newly created todo item.
+title (str): Title of the todo item.
+description (str): Description of the todo item.
+done (bool): Status of the todo item (completed or not).
+Success Response:
+json
+نسخ الكود
+{
+  "id": 1,
+  "title": "Buy groceries",
+  "description": "Milk, bread, and eggs",
+  "done": false
+}
+4. Get Todo by ID
+Endpoint: /todo/{todo_id}
+Method: GET
+Description: Retrieves a single todo item by its ID.
+Path Parameter:
+todo_id (int): Unique ID of the todo item.
+Response: TodoOut
+id (int): Unique ID of the todo item.
+title (str): Title of the todo item.
+description (str): Description of the todo item.
+done (bool): Status of the todo item (completed or not).
+Success Response:
+json
+نسخ الكود
+{
+  "id": 1,
+  "title": "Buy groceries",
+  "description": "Milk, bread, and eggs",
+  "done": false
+}
+5. Get All Todos
+Endpoint: /todo/get/
+Method: GET
+Description: Retrieves all todo items.
+Response: List of TodoOut
+id (int): Unique ID of the todo item.
+title (str): Title of the todo item.
+description (str): Description of the todo item.
+done (bool): Status of the todo item (completed or not).
+Success Response:
+json
+نسخ الكود
+[
+  {
+    "id": 1,
+    "title": "Buy groceries",
+    "description": "Milk, bread, and eggs",
+    "done": false
+  },
+  {
+    "id": 2,
+    "title": "Clean the house",
+    "description": "Living room and kitchen",
+    "done": true
+  }
+]
+6. Update Todo
+Endpoint: /todo/put/{todo_id}
+Method: PUT
+Description: Updates an existing todo item by its ID.
+Path Parameter:
+todo_id (int): Unique ID of the todo item to update.
+Request Body: TodoIn
+title (str): Title of the todo item.
+description (str): Description of the todo item.
+done (bool): Status of the todo item (completed or not).
+Response:
+success (bool): Indicates if the update was successful.
+Success Response:
+json
+نسخ الكود
+{
+  "success": true
+}
+7. Delete Todo
+Endpoint: /todo/delete/{todo_id}
+Method: DELETE
+Description: Deletes a todo item by its ID.
+Path Parameter:
+todo_id (int): Unique ID of the todo item to delete.
+Response:
+success (bool): Indicates if the deletion was successful.
+Success Response:
+json
+
+{
+  "success": true
+}
+Summary of Changes
+Added clear descriptions for each endpoint.
+Provided detailed request and response formats.
+Ensured consistent error handling and informative responses.
+This documentation will help users understand how to interact with your API and what to expect from each endpoint.
