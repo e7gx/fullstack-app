@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         cardColor: Colors.white,
         canvasColor: Colors.white,
         fontFamily: 'Cairo', // Apply the custom font family here
+
         appBarTheme: const AppBarTheme(
           color: Colors.white, // Custom color for AppBar
         ),
