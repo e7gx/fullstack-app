@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
@@ -77,6 +78,12 @@ class _MainPageState extends State<AiChatPage> {
     $formattedTodosList
     
     Based on the user's input, respond within the context of task management and productivity.
+
+    If the user asks to add a task or delete , Respond that you are only a chatbot you can not do this hind of tasks.
+
+    If the user asks for help, provide a list of commands they can use.
+
+    
     """;
 
       // Concatenate the prompt with the user's message
@@ -325,6 +332,6 @@ class Message {
 }
 
 class APIKey {
-  static const apikey =
-      "";
+  static final apikey = dotenv.env['OPENAI_API_KEY'];
+
 }

@@ -238,22 +238,36 @@ class HomeScreenContent extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Lottie.asset('assets/animation/ppmana.json'),
-              Center(
-                child: Text('Error: ${snapshot.error}'),
-              ),
-            ],
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Lottie.asset(
+                  'assets/animation/WOR.json',
+                  height: 300,
+                  width: 500,
+                ),
+                Text(
+                  'Opps  ${snapshot.error}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 23,
+                    fontFamily: 'Cario',
+                    fontWeight: FontWeight.w800,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Lottie.asset('assets/animation/onternet.json'),
+              Lottie.asset('assets/animation/internet.json'),
               const Text(
                 'No todos found',
                 style: TextStyle(

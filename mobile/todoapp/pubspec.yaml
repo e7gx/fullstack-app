@@ -56,7 +56,7 @@ flutter:
     - assets/images/uqu.png
     - assets/animation/
     - assets/animation/ppmana.json
-    - .env
+    - assets/.env
 
   fonts:
     - family: Cario
