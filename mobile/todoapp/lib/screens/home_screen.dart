@@ -7,6 +7,7 @@ import 'package:todoapp/auth/signup.dart';
 import 'package:todoapp/components/reuse.dart';
 import 'package:todoapp/model/todo.dart';
 import 'package:todoapp/screens/add_todo.dart';
+import 'package:todoapp/screens/chat/chat.dart';
 import 'package:todoapp/screens/delete_todo_screen.dart';
 import 'package:todoapp/screens/edit_todo.dart';
 import 'package:todoapp/screens/profile.dart';
@@ -64,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = [
     const HomeScreenContent(),
     const AddTodoScreen(),
+    const AiChatPage(),
   ];
 }
 
@@ -119,10 +121,15 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: const Text('Item 1'),
+            title: const Text('Chat'),
             leading: const Icon(Icons.task, color: Colors.black),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AiChatPage(),
+                ),
+              );
             },
           ),
           ListTile(
@@ -185,6 +192,13 @@ class CustomBottomNavigationBar extends StatelessWidget {
           ),
           label: 'Add',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.chat,
+            color: Colors.black,
+          ),
+          label: 'Chat',
+        ),
       ],
       currentIndex: selectedIndex,
       backgroundColor: Colors.white,
@@ -224,13 +238,22 @@ class HomeScreenContent extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Lottie.asset('assets/animation/ppmana.json'),
+              Center(
+                child: Text('Error: ${snapshot.error}'),
+              ),
+            ],
+          );
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Lottie.asset('assets/animation/onternet.json'),
               const Text(
                 'No todos found',
                 style: TextStyle(
