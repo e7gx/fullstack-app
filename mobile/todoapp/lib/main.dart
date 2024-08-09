@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:todoapp/screens/view/intro.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyAppAbdullah());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyAppAbdullah extends StatelessWidget {
+  const MyAppAbdullah({super.key});
 
   @override
   Widget build(BuildContext context) {

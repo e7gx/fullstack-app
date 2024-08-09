@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:todoapp/auth/login.dart';
+import 'package:todoapp/auth/signup.dart';
 import 'package:todoapp/components/reuse.dart';
 import 'package:todoapp/model/todo.dart';
 import 'package:todoapp/screens/add_todo.dart';
@@ -146,7 +146,7 @@ class CustomDrawer extends StatelessWidget {
               // Navigate to the Login Screen
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
+                  builder: (context) => const RegisterScreen(),
                 ),
               );
             },

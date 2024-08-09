@@ -4,6 +4,7 @@ from typing import List
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
+from pydantic import validate_email
 from rest_framework_simplejwt.tokens import RefreshToken
 from .schema import TodoIn, TodoOut, UserCreate, UserLogin, UserOut
 from .models import Todo
@@ -20,40 +21,62 @@ def get_tokens_for_user(user):
         'refresh': str(refresh),
         'access': str(refresh.access_token),
     }
-
 @ninjaapi.post("/register", response=UserOut)
 def register(request, payload: UserCreate):
     """
     Register a new user and return JWT tokens.
     """
-    # Validate if username already exists
-    if User.objects.filter(username=payload.username).exists():
-        return {"error": "Username already exists"}
+    try:
+        # Validate if username already exists
+        if User.objects.filter(username=payload.username).exists():
+            return {"error": "Username already exists. Please choose a different username."}
 
-    # Create a new user
-    user = User.objects.create(
-        first_name=payload.first_name,
-        last_name=payload.last_name,
-        username=payload.username,
-        email=payload.email,
-        password=make_password(payload.password),  # Hash the password
-    )
-    # Generate JWT tokens
-    tokens = get_tokens_for_user(user)
-    return UserOut(username=user.username, token=tokens)
+        # Validate if email already exists
+        if User.objects.filter(email=payload.email).exists():
+            return {"error": "Email already exists. Please use a different email address."}
+
+        # Validate email format
+        if not validate_email(payload.email):
+            return {"error": "Invalid email format. Please enter a valid email address."}
+
+        # Create a new user
+        user = User.objects.create(
+            first_name=payload.first_name,
+            last_name=payload.last_name,
+            username=payload.username,
+            email=payload.email,
+            password=make_password(payload.password),  # Hash the password
+        )
+        # Generate JWT tokens
+        tokens = get_tokens_for_user(user)
+        return UserOut(username=user.username, token=tokens)
+    except Exception as e:
+        # Return a 500 Internal Server Error for unexpected issues
+        return {"error": "An unexpected error occurred. Please try again later."}
+
 
 @ninjaapi.post("/login", response=UserOut)
 def login(request, payload: UserLogin):
     """
     Authenticate user and return JWT tokens.
     """
-    user = authenticate(request, username=payload.username, password=payload.password)
-    if user is not None:
+    try:
+        user = User.objects.filter(username=payload.username).first()
+        if user is None:
+            # User does not exist
+            return {"error": "Invalid username. Please check your username and try again."}
+        
+        # User exists, now check password
+        if not authenticate(request, username=payload.username, password=payload.password):
+            return {"error": "Invalid password. Please check your password and try again."}
+
+        # If authentication is successful
         tokens = get_tokens_for_user(user)
         return UserOut(username=user.username, token=tokens)
-    else:
-        # Return a 401 Unauthorized error for invalid credentials
-        return {"error": "Invalid credentials"}
+    except Exception as e:
+        # Return a 500 Internal Server Error for unexpected issues
+        return {"error": "An unexpected error occurred. Please try again later."}
+
 
 # Create a new todo
 @ninjaapi.post("/todo/create", response=TodoOut)

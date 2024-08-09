@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todoapp/auth/signup.dart';
 import 'package:todoapp/services/api_service.dart';
 import 'package:todoapp/screens/home_screen.dart';
 
@@ -35,8 +36,40 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         }
       } catch (e) {
+        String errorMessage = '';
+        if (e.toString().contains('Invalid username')) {
+          errorMessage =
+              'Username not found. Please check your username and try again.';
+        } else if (e.toString().contains('Invalid password')) {
+          errorMessage = 'Incorrect password. Please try again.';
+        } else if (e.toString().contains('An unexpected error occurred')) {
+          errorMessage =
+              'We are experiencing technical difficulties. Please try again later.';
+        } else {
+          errorMessage =
+              'Login failed. Please check your credentials and try again.';
+        }
+
+        // Ensure the SnackBar appears with the error message
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${e.toString()}')),
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 4),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            action: SnackBarAction(
+              label: 'Dismiss',
+              textColor: Colors.white,
+              onPressed: () {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              },
+            ),
+          ),
         );
       }
     }
@@ -118,8 +151,30 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'Sign Up Now!',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Cario',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(
-                    height: 50,
+                    height: 30,
                   ),
                   ElevatedButton(
                     onPressed: _login,
