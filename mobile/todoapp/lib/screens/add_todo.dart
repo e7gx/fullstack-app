@@ -143,7 +143,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                                 child: Text(
                                   'Task added successfully ✅',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 16,
                                     fontFamily: 'Cario',
                                     fontWeight: FontWeight.bold,
                                   ),

@@ -26,10 +26,29 @@ class _MainPageState extends State<AiChatPage> {
     _loadUserData();
   }
 
+  Future<void> _saveChatHistory() async {
+    List<String> messages = _messages
+        .map((message) => json.encode({
+              'text': message.text,
+              'isMe': message.isMe,
+            }))
+        .toList();
+
+    await SharedPreferencesService.saveChatHistory(messages);
+  }
+
   Future<void> _loadUserData() async {
     final firstName = await SharedPreferencesService.getFirstName();
+    final chatHistory = await SharedPreferencesService.getChatHistory();
+
     setState(() {
       _firstName = firstName;
+      if (chatHistory.isNotEmpty) {
+        _messages.addAll(chatHistory.map((message) {
+          final parsed = json.decode(message);
+          return Message(text: parsed['text'], isMe: parsed['isMe']);
+        }).toList());
+      }
     });
   }
 
@@ -40,8 +59,7 @@ class _MainPageState extends State<AiChatPage> {
   void onSendMessage() {
     String trimmedText = _textEditingController.text.trim();
     if (trimmedText.isEmpty) {
-      // هنا يمكنك عرض رسالة تنبيه للمستخدم أو تجاهل العملية
-      return; // توقف عن تنفيذ باقي الكود في هذه الدالة إذا كان الحقل فارغ
+      return;
     }
 
     setState(() {
@@ -51,14 +69,16 @@ class _MainPageState extends State<AiChatPage> {
       _textEditingController.clear();
     });
 
+    _saveChatHistory(); // Save after sending the message
+
     sendMessageToChatGpt(trimmedText).then((response) {
       Message chatGptMessage = Message(text: response, isMe: false);
       setState(() {
         _messages.insert(0, chatGptMessage);
       });
+      _saveChatHistory(); // Save after receiving the response
     }).catchError((error) {
-      // يمكنك التعامل مع الخطأ هنا
-      // print('Error sending message to ChatGPT: $error');
+      // Handle the error here
     });
   }
 
@@ -69,20 +89,22 @@ class _MainPageState extends State<AiChatPage> {
 
       // Convert the list of Todos to a string
       String formattedTodosList = todosList
-          .map((todo) => '- ${todo.title}') // Assuming each Todo has a 'title'
+          .map((todo) =>
+              '- ${todo.title}\n  Description: ${todo.description}\n  Done: ${todo.done ? 'Yes' : 'No'}') // Assuming each Todo has 'title', 'description', and 'done' properties
           .join('\n');
 
       // Define the prompt
       String prompt = """
-    You are an assistant in a to-do list app. Here's the current list of tasks:
+    You are an helpful assistant in a to-do list app. Here's the current list of tasks:
     $formattedTodosList
     
-    Based on the user's input, respond within the context of task management and productivity.
+    If the user didn't has any tasks, say: "You don't have any tasks yet."
 
-    If the user asks to add a task or delete , Respond that you are only a chatbot you can not do this hind of tasks.
+    Based on the user's input, respond within the context of task management and productivity.
 
     If the user asks for help, provide a list of commands they can use.
 
+    If the user asks for his tasks or todos provide a list of his todos or tasks.
     
     """;
 
@@ -133,7 +155,7 @@ class _MainPageState extends State<AiChatPage> {
   Widget _buildMessage(Message message, bool isLatestMessage) {
     // تحديد مسار صورة المتحدث
     String imagePath =
-        message.isMe ? 'assets/images/image.jpg' : 'assets/images/robot.png';
+        message.isMe ? 'assets/images/image.jpg' : 'assets/images/ai.png';
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -151,6 +173,14 @@ class _MainPageState extends State<AiChatPage> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
               padding: const EdgeInsets.all(15),
               child: message.isMe
@@ -333,5 +363,4 @@ class Message {
 
 class APIKey {
   static final apikey = dotenv.env['OPENAI_API_KEY'];
-
 }

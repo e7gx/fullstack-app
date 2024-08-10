@@ -1,6 +1,6 @@
 from django.urls import path
-from .api import ninjaapi
+from .api import todosApi
 
 urlpatterns = [
-    path('', ninjaapi.urls),
+    path('', todosApi.urls),
 ]

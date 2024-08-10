@@ -1,215 +1,100 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:todoapp/auth/login.dart';
-import 'package:todoapp/components/reuse.dart';
 import 'package:todoapp/model/todo.dart';
-import 'package:todoapp/screens/add_todo.dart';
-import 'package:todoapp/screens/chat/chat.dart';
-import 'package:todoapp/screens/delete_todo_screen.dart';
 import 'package:todoapp/screens/edit_todo.dart';
-import 'package:todoapp/screens/profile.dart';
-import 'package:todoapp/services/shared_preferences_service.dart';
 import '../services/api_service.dart';
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-  String _firstName = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData();
-  }
-
-  Future<void> _loadUserData() async {
-    final firstName = await SharedPreferencesService.getFirstName();
-    setState(() {
-      _firstName = firstName;
-    });
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(firstName: _firstName),
-      endDrawer: const CustomDrawer(),
-      body: Stack(
-        children: [
-          stackBacground(),
-          _pages[_selectedIndex],
-        ],
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        selectedIndex: _selectedIndex,
-        onItemTapped: _onItemTapped,
-      ),
-    );
-  }
-
-  final List<Widget> _pages = [
-    const HomeScreenContent(),
-    const AddTodoScreen(),
-    const AiChatPage(),
-  ];
-}
-
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String firstName;
-
-  const CustomAppBar({super.key, required this.firstName});
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(
-            'Welcome $firstName 👋',
-            style: const TextStyle(
-              fontFamily: 'Cario',
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
-      backgroundColor: Colors.white,
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-}
-
-class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      backgroundColor: Colors.white,
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            decoration: const BoxDecoration(),
-            child: CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.white,
-              child: Image.asset(
-                'assets/images/task.png',
-                width: 150,
-                height: 150,
-              ),
-            ),
-          ),
-          ListTile(
-            title: const Text('Chat'),
-            leading: const Icon(Icons.task, color: Colors.black),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AiChatPage(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            title: const Text('Profile 2'),
-            leading: const Icon(Icons.person_2_rounded, color: Colors.black),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const UserProfile(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            title: const Text('Logout'),
-            leading: const Icon(Icons.logout, color: Colors.red),
-            onTap: () async {
-              // Perform logout operations here
-
-              // Navigate to the Login Screen
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CustomBottomNavigationBar extends StatelessWidget {
-  final int selectedIndex;
-  final Function(int) onItemTapped;
-
-  const CustomBottomNavigationBar({
-    super.key,
-    required this.selectedIndex,
-    required this.onItemTapped,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.home,
-            color: Colors.black,
-          ),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.add_task_rounded,
-            color: Colors.black,
-          ),
-          label: 'Add',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.chat,
-            color: Colors.black,
-          ),
-          label: 'Chat',
-        ),
-      ],
-      currentIndex: selectedIndex,
-      backgroundColor: Colors.white,
-      selectedItemColor: Colors.black,
-      onTap: onItemTapped,
-    );
-  }
-}
 
 class HomeScreenContent extends StatelessWidget {
   const HomeScreenContent({super.key});
+
+  Future<void> _showDeleteConfirmationDialog(
+      BuildContext context, int todoId) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // User must tap a button to close the dialog
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Lottie.asset(
+                'assets/animation/WOR.json',
+                height: 180,
+                width: 200,
+              ),
+              const Text(
+                'Confirm Deletion',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          content: const Text(
+            'Are you sure you want to delete this todo?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          actions: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  child: const Text(
+                    'Cancel',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                ),
+                TextButton(
+                  child: const Text(
+                    'Delete',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.red,
+                    ),
+                  ),
+                  onPressed: () async {
+                    try {
+                      await ApiService().deleteTodo(todoId);
+                      Navigator.of(context).pop(); // Close the dialog
+                      // Optionally, refresh the list or notify the user
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Todo deleted successfully')),
+                      );
+                    } catch (e) {
+                      Navigator.of(context).pop(); // Close the dialog
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Failed to delete todo: $e')),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -263,19 +148,21 @@ class HomeScreenContent extends StatelessWidget {
             ),
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Lottie.asset('assets/animation/internet.json'),
-              const Text(
-                'No todos found',
-                style: TextStyle(
-                  fontSize: 40,
-                  color: Colors.black,
+          return Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset('assets/animation/x.json'),
+                const Text(
+                  'No todos found',
+                  style: TextStyle(
+                    fontSize: 40,
+                    color: Colors.black,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         } else {
           return ListView.builder(
@@ -330,15 +217,8 @@ class HomeScreenContent extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DeleteTodoScreen(
-                                      todoId: snapshot.data![index].id),
-                                ),
-                              ).then((value) {
-                                // Trigger the refresh function if needed
-                              });
+                              _showDeleteConfirmationDialog(
+                                  context, snapshot.data![index].id);
                             },
                           ),
                         ],
