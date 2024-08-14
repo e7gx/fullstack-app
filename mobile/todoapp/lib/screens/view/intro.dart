@@ -63,7 +63,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
             ),
           ),
           child: const Text(
-            'هيا بنا لتجربة مختلفة',
+            'Let\'s Go ',
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontFamily: 'Cario',
@@ -77,7 +77,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
 
       pages: [
         PageViewModel(
-          title: '👋 مرحبا بك',
+          title: 'Welcome 👋',
           body:
               "hello Weclome to Todo App, this app is a simple todo app that allows you to add, edit, delete and view your todos",
           image: Lottie.asset(
@@ -87,18 +87,19 @@ class OnBoardingPageState extends State<OnBoardingPage> {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: 'من نحن؟؟',
-          body: "اهلا وسهلا",
+          title: 'Why Us?',
+          body:
+              "We are the best in the market, we provide the best service with AI technology",
           image: Lottie.asset(
-            'assets/animation/ppmana.json',
+            'assets/animation/green.json',
             fit: BoxFit.cover,
           ),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: 'مرحبا بك',
+          title: 'Sign Up Now !',
           body:
-              "رفع الوعي الرقمي وإنشاء مجتمعات تقنية تطوعية تساهم لتحقيق رؤية 2030 , الريادة في التمكين الرقمي المجتمعي",
+              "Sign up now and start using our app, we are sure you will love it",
           image: Lottie.asset(
             'assets/animation/ppmana.json',
             fit: BoxFit.cover,
@@ -118,7 +119,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
         color: Colors.white,
       ),
       skip: const Text(
-        'تخطي',
+        'Skip',
         style: TextStyle(
             fontFamily: 'Cario',
             fontWeight: FontWeight.w600,
@@ -129,7 +130,7 @@ class OnBoardingPageState extends State<OnBoardingPage> {
         color: Colors.white,
       ),
       done: const Text(
-        'تم',
+        'Done',
         style: TextStyle(
           fontFamily: 'Cario',
           fontWeight: FontWeight.w600,

@@ -101,7 +101,7 @@ class _MainPageState extends State<AiChatPage> {
 
     the username that you are helping is $_firstName.
     
-    If the user didn't has any tasks, say: "You don't have any tasks yet."
+    If the user didn't has any tasks, say: "You don't have any tasks yet.
 
     Based on the user's input, respond within the context of task management and productivity.
 
