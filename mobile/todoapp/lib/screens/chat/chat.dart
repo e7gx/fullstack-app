@@ -97,6 +97,9 @@ class _MainPageState extends State<AiChatPage> {
       String prompt = """
     You are an helpful assistant in a to-do list app. Here's the current list of tasks:
     $formattedTodosList
+
+
+    the username that you are helping is $_firstName.
     
     If the user didn't has any tasks, say: "You don't have any tasks yet."
 
