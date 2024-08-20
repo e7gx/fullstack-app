@@ -29,18 +29,76 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-      ),
-      body: Center(
-        child: Text(
-          '👋 أهلا وسهلا بك, $_firstName',
-          textAlign: TextAlign.end,
-          style: const TextStyle(
-            fontFamily: 'Cario',
-            color: Colors.black,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 200.0,
+            flexibleSpace: FlexibleSpaceBar(
+              title: const Text(
+                'Profile',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              background: Image.asset(
+                'assets/images/image.jpg',
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
+          SliverPadding(
+            padding: const EdgeInsets.all(16.0),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage(
+                      'assets/images/image.jpg',
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Card(
+                    elevation: 4,
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '👋 أهلا وسهلا بك, $_firstName',
+                            textAlign: TextAlign.end,
+                            style: const TextStyle(
+                              fontFamily: 'Cairo',
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'This is your profile page. You can view and edit your personal information here.',
+                            style: TextStyle(
+                              fontFamily: 'Cairo',
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

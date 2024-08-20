@@ -116,18 +116,18 @@ class CustomDrawer extends StatelessWidget {
               ),
             ),
           ),
-          ListTile(
-            title: const Text('Chat'),
-            leading: const Icon(Icons.task, color: Colors.black),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AiChatPage(),
-                ),
-              );
-            },
-          ),
+          // ListTile(
+          //   title: const Text('Chat'),
+          //   leading: const Icon(Icons.task, color: Colors.black),
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const AiChatPage(),
+          //       ),
+          //     );
+          //   },
+          // ),
           ListTile(
             title: const Text('Profile 2'),
             leading: const Icon(Icons.person_2_rounded, color: Colors.black),
